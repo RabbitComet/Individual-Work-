@@ -1,6 +1,5 @@
 #include<iostream>
 #include<vector>
-#include<unordered_set>
 
 int board_size;
 
@@ -104,21 +103,20 @@ void show_board(std::vector<std::vector<int>> board){
 }
 
 
-bool queen_board(std::vector<std::vector<int>> board, int x, int y, std::unordered_set<int> valid_columns) {
+bool queen_board(std::vector<std::vector<int>> board, int x, int y, int count = 0) {
 		
 	mark_occupied(board, x, y);
-	valid_columns.erase(x);
+	count++;
 
-
-	if (valid_columns.size() == 0) {
+	if (count == board_size) {
 		show_board(board);
 		return true;    
 	    
 	}
 
-	for (auto  col : valid_columns) {
-		if(board[y+1][col] == 0){
-			if (queen_board(board, col, y+1, valid_columns)) return true;
+	for (int i = 0; i < board_size ; i++) {
+		if(board[y+1][i] == 0){
+			if (queen_board(board, i, y+1, count)) return true;
 		}
 	}
 	
@@ -138,13 +136,11 @@ int main() {
 	std::cout<<std::endl;
 
 	std::vector<std::vector<int>> board = {};
-	std::unordered_set<int> valid_columns;
 
 	std::vector<int> zero_vector = {};
 	//O(n), n is length of the board
 	for (int i = 0; i < board_size; i++) {
 		zero_vector.push_back(0);
-		valid_columns.insert(i);
 	}
 
 
@@ -153,11 +149,10 @@ int main() {
 		board.push_back(zero_vector);
 	}
 
-    	for (int i = 0; i < board_size; i++) {
-    		for (int j = 0; j < board_size; j++) {
-    			if(queen_board(board,j,i,valid_columns)) return 0;
-    		}
+    	for (int j = 0; j < board_size; j++) {
+    		if(queen_board(board,j,0)) return 0;
     	}
+    	
 
     	std::cout<<"No possible solutions.";
 
