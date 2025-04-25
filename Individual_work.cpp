@@ -1,0 +1,165 @@
+#include<iostream>
+#include<vector>
+#include<unordered_set>
+
+int board_size;
+
+//Time Complexity of O(n), where n is distance between coordinates of the queen and the edges of the board.
+void queen_movement(std::vector<std::vector<int>>& board, int x, int y, int x_move, int y_move) {
+
+	if (x + x_move < 0 || y + y_move < 0 || x + x_move >= board_size || y + y_move >= board_size) {
+		return;
+	}
+
+	board[y + y_move][x + x_move] = 1;
+
+	queen_movement(board, x + x_move, y + y_move, x_move, y_move);
+
+
+}
+//Time Compleixity of O(n), where n is the length of the board.
+void hori_vert(std::vector<std::vector<int>>& board, int x, int y){
+	for(int i = 0 ; i < board_size; i++){
+		board[0+i][x] = 1;
+		board[y][0+i] = 1;	
+	}
+}
+
+//Time Complexity of O(n), n is the distance from the edges
+void secondary_diagonal(std::vector<std::vector<int>>& board, int x, int y){
+
+	int curr_x = x-1;
+	int curr_y = y+1;
+	
+	while(curr_x >= 0 && curr_y < board_size){
+		board[curr_y][curr_x] = 1;
+		curr_x--;
+		curr_y++;
+	}
+
+	curr_x = x+1;
+	curr_y = y-1;
+
+	while(curr_x < board_size && curr_y >= 0){
+		board[curr_y][curr_x] = 1;
+		curr_x++;
+		curr_y--;
+	}
+
+}
+
+//Time Complexity of O(n), n is the distance from the edges
+void main_diagonal(std::vector<std::vector<int>>& board, int x, int y){
+
+	int curr_x = x+1;
+	int curr_y = y+1;
+	
+	while(curr_x < board_size && curr_y < board_size){
+		board[curr_y][curr_x] = 1;
+		curr_x++;
+		curr_y++;
+	}
+
+	curr_x = x-1;
+	curr_y = y-1;
+
+	while(curr_x >= 0 && curr_y >= 0){
+		board[curr_y][curr_x] = 1;
+		curr_x--;
+		curr_y--;
+	}
+
+}
+
+//Time complexity of O(n), n is the length of the board.
+void mark_occupied(std::vector<std::vector<int>>& board, int x, int y) {
+	//Horizontal and vertical	
+	hori_vert(board, x, y);
+	//second diagonal
+	secondary_diagonal(board, x, y);
+	//main diagonal
+	main_diagonal(board, x, y);
+	//marking the Queen
+	board[y][x] = 2;
+}
+
+//Time complexity of O(n^2), where n is the length of the board
+void show_board(std::vector<std::vector<int>> board){
+    	for (int i = 0; i < board_size; i++) {
+    		for (int j = 0; j < board_size; j++) {
+		    	if(board[i][j] == 1 && (i+j)%2 == 0){
+				std::cout<< "⬜";
+			}
+			else if(board[i][j] == 1){
+				std::cout<<"⬛";
+			}
+			else{
+				std::cout<<"♛ ";
+			}
+		}
+		std::cout << std::endl;
+    	}
+
+	std::cout<<std::endl;
+}
+
+
+bool queen_board(std::vector<std::vector<int>> board, int x, int y, std::unordered_set<int> valid_columns) {
+		
+	mark_occupied(board, x, y);
+	valid_columns.erase(x);
+
+
+	if (valid_columns.size() == 0) {
+		show_board(board);
+		return true;    
+	    
+	}
+
+	for (auto  col : valid_columns) {
+		if(board[y+1][col] == 0){
+			if (queen_board(board, col, y+1, valid_columns)) return true;
+		}
+	}
+	
+	return false;
+
+
+}
+
+
+
+int main() {
+
+	std::cout<<"How long is the side of the board: ";
+
+	std::cin>>board_size;
+
+	std::cout<<std::endl;
+
+	std::vector<std::vector<int>> board = {};
+	std::unordered_set<int> valid_columns;
+
+	std::vector<int> zero_vector = {};
+	//O(n), n is length of the board
+	for (int i = 0; i < board_size; i++) {
+		zero_vector.push_back(0);
+		valid_columns.insert(i);
+	}
+
+
+	//O(n), n is length of the board
+	for (int i = 0; i < board_size; i++) {
+		board.push_back(zero_vector);
+	}
+
+    	for (int i = 0; i < board_size; i++) {
+    		for (int j = 0; j < board_size; j++) {
+    			if(queen_board(board,j,i,valid_columns)) return 0;
+    		}
+    	}
+
+    	std::cout<<"No possible solutions.";
+
+	return 0;
+}
