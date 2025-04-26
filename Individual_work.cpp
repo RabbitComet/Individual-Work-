@@ -3,19 +3,6 @@
 
 int board_size;
 
-//Time Complexity of O(n), where n is distance between coordinates of the queen and the edges of the board.
-void queen_movement(std::vector<std::vector<int>>& board, int x, int y, int x_move, int y_move) {
-
-	if (x + x_move < 0 || y + y_move < 0 || x + x_move >= board_size || y + y_move >= board_size) {
-		return;
-	}
-
-	board[y + y_move][x + x_move] = 1;
-
-	queen_movement(board, x + x_move, y + y_move, x_move, y_move);
-
-
-}
 //Time Compleixity of O(n), where n is the length of the board.
 void hori_vert(std::vector<std::vector<int>>& board, int x, int y){
 	for(int i = 0 ; i < board_size; i++){
@@ -102,7 +89,7 @@ void show_board(std::vector<std::vector<int>> board){
 	std::cout<<std::endl;
 }
 
-
+//Time complexity of O(n!), n is the length of the board.
 bool queen_board(std::vector<std::vector<int>> board, int x, int y, int count = 0) {
 		
 	mark_occupied(board, x, y);
@@ -126,7 +113,7 @@ bool queen_board(std::vector<std::vector<int>> board, int x, int y, int count = 
 }
 
 
-
+//Overall, O(n!).
 int main() {
 
 	std::cout<<"How long is the side of the board: ";
@@ -149,6 +136,7 @@ int main() {
 		board.push_back(zero_vector);
 	}
 
+	//O(n*n!)->O(n!)
     	for (int j = 0; j < board_size; j++) {
     		if(queen_board(board,j,0)) return 0;
     	}
