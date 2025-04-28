@@ -90,7 +90,7 @@ void show_board(std::vector<std::vector<int>> board){
 }
 
 //Time complexity of O(n!), n is the length of the board.
-bool queen_board(std::vector<std::vector<int>> board, int x, int y, int count = 0) {
+bool place_queens(std::vector<std::vector<int>> board, int x, int y, int count = 0) {
 		
 	mark_occupied(board, x, y);
 	count++;
@@ -103,7 +103,7 @@ bool queen_board(std::vector<std::vector<int>> board, int x, int y, int count = 
 
 	for (int i = 0; i < board_size ; i++) {
 		if(board[y+1][i] == 0){
-			if (queen_board(board, i, y+1, count)) return true;
+			if (place_queens(board, i, y+1, count)) return true;
 		}
 	}
 	
@@ -138,7 +138,7 @@ int main() {
 
 	//O(n*n!)->O(n!)
     	for (int j = 0; j < board_size; j++) {
-    		if(queen_board(board,j,0)) return 0;
+    		if(place_queens(board,j,0)) return 0;
     	}
     	
 
