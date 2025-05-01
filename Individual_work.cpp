@@ -6,8 +6,8 @@ int board_size;
 //Time Compleixity of O(n), where n is the length of the board.
 void hori_vert(std::vector<std::vector<int>>& board, int x, int y){
 	for(int i = 0 ; i < board_size; i++){
-		board[0+i][x] = 1;
-		board[y][0+i] = 1;	
+		board[i][x] = 1;
+		board[y][i] = 1;	
 	}
 }
 
