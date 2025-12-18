@@ -6,17 +6,8 @@
 #include "../Characters/ConsoleObserver.h"
 #include "../Characters/FileObserver.h"
 
-// Simple concrete character for testing
-class TestCharacter : public ICharacter {
-public:
-    TestCharacter(int atk, int curHp, int maxHp, int mana, const std::string& name, int def)
-        : ICharacter(atk, curHp, maxHp, mana, name, def) {}
-
-    void specialMove(ICharacter& target) override {
-        // special move: deal double attack
-        target.takeDamage(this->attackPower * 2);
-    }
-};
+#include "../Characters/Paladin.h"
+#include "../Characters/Heretic.h"
 
 int main() {
     try {
@@ -31,19 +22,33 @@ int main() {
         FileObserver fObs(&fileLogger);
 
         // Create characters
-        TestCharacter a(10, 50, 50, 10, "Alice", 2);
-        TestCharacter b(8, 40, 40, 5, "Bob", 1);
+        Paladin paladin("Uther");
+        Heretic heretic("Morgana");
 
-        a.addObserver(&cObs);
-        a.addObserver(&fObs);
+        paladin.addObserver(&cObs);
+        paladin.addObserver(&fObs);
+        heretic.addObserver(&cObs);
+        heretic.addObserver(&fObs);
 
-        // Actions
-        a.attack(b);          // should notify observers
-        b.takeDamage(5);      // should notify observers on b
-        a.heal();             // should notify observers
-        a.specialMove(b);     // should NOT notify (per design)
+        console.log(LogLevel::INFO, "Starting Paladin vs Heretic test");
 
-        std::cout << "Observer test finished. Check test_log.txt and console output." << std::endl;
+        // Basic interactions
+        paladin.attack(heretic);
+        heretic.attack(paladin);
+
+        // Test special moves (Paladin costs 30 mana)
+        paladin.specialMove(heretic); // should succeed
+        paladin.specialMove(heretic); // likely insufficient mana -> WARNING
+
+        // Test Heretic special (costs 10 mana or sacrifice if insufficient)
+        heretic.specialMove(paladin); // should succeed
+        heretic.specialMove(paladin); // may sacrifice HP if mana low
+
+        // Heal actions
+        paladin.heal();
+        heretic.heal();
+
+        std::cout << "Paladin/Heretic test finished. Check test_log.txt and console output." << std::endl;
     } catch (const std::exception& ex) {
         std::cerr << "Exception: " << ex.what() << std::endl;
         return 1;

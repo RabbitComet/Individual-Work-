@@ -20,7 +20,7 @@ protected:
 public:
     // Constructors
     ICharacter() = default;
-    ICharacter(const int& attackPower,const int& currentHealth,const int& maxHealth,const int& mana, const std::string& name, const int& defense);
+    ICharacter(const int& attackPower,const int& maxHealth,const int& mana, const std::string& name, const int& defense);
 
     // Observer management
     void addObserver(ICharacterObserver* observer);

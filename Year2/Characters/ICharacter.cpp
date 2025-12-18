@@ -2,8 +2,8 @@
 #include "ICharacterObserver.h"
 #include "../Logging/LogLevel.h"
 
-ICharacter::ICharacter(int attackPower, int currentHealth, int maxHealth, int mana, const std::string& name, int defense)
-    : attackPower(attackPower), currentHealth(currentHealth), maxHealth(maxHealth), mana(mana), name(name), defense(defense) {}
+ICharacter::ICharacter(const int& attack,const int& maxHealth, const int& mana, const std::string& name, const int& defense)
+    : attackPower(attack), currentHealth(maxHealth), maxHealth(maxHealth), mana(mana), name(name), defense(defense) {}
 
 std::string ICharacter::getName() const { return name; }
 int ICharacter::getCurrentHealth() const { return currentHealth; }
@@ -28,8 +28,8 @@ void ICharacter::heal() {
 }
 
 void ICharacter::attack(ICharacter& target) {
-    target.takeDamage(this->attackPower);
     notifyObservers(std::string(name + " attacked " + target.getName()), LogLevel::ACTION);
+    target.takeDamage(this->attackPower);
 }
 
 void ICharacter::addObserver(ICharacterObserver* observer) {
