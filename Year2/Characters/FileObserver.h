@@ -1,0 +1,15 @@
+#pragma once
+
+#include "ICharacterObserver.h"
+#include "../Logging/ILogger.h"
+#include "../Logging/LogLevel.h"
+#include <string>
+
+class FileObserver : public ICharacterObserver {
+public:
+    explicit FileObserver(ILogger* logger);
+    void onAction(const std::string& action, LogLevel level) override;
+
+private:
+    ILogger* logger;
+};

@@ -1,24 +1,49 @@
 #include <iostream>
-#include "../Logging/ConsoleLogger.h"
-#include "../Logging/FileLogger.h"
-#include "../Logging/FileWriter.h"
+#include "Logging/ConsoleLogger.h"
+#include "Logging/FileLogger.h"
+#include "Logging/FileWriter.h"
+#include "../Characters/ICharacter.h"
+#include "../Characters/ConsoleObserver.h"
+#include "../Characters/FileObserver.h"
+
+// Simple concrete character for testing
+class TestCharacter : public ICharacter {
+public:
+    TestCharacter(int atk, int curHp, int maxHp, int mana, const std::string& name, int def)
+        : ICharacter(atk, curHp, maxHp, mana, name, def) {}
+
+    void specialMove(ICharacter& target) override {
+        // special move: deal double attack
+        target.takeDamage(this->attackPower * 2);
+    }
+};
 
 int main() {
     try {
-        // Console logger
         ConsoleLogger console;
         console.log(LogLevel::INFO, "Console logger initialised");
 
-        // File writer + file logger
         FileWriter writer("test_log.txt");
         FileLogger fileLogger(&writer);
 
-        console.log(LogLevel::ACTION, "Performing an action");
-        fileLogger.log(LogLevel::ACTION, "Performed an action and persisted it");
-        console.log(LogLevel::WARNING, "This is a warning");
-        fileLogger.log(LogLevel::ERROR, "An error occurred (logged to file)");
+        // Observers
+        ConsoleObserver cObs(&console);
+        FileObserver fObs(&fileLogger);
 
-        std::cout << "Finished logging test. Check test_log.txt." << std::endl;
+        // Create characters
+        TestCharacter a(10, 50, 50, 10, "Alice", 2);
+        TestCharacter b(8, 40, 40, 5, "Bob", 1);
+
+        a.addObserver(&cObs);
+        a.addObserver(&fObs);
+
+        // Actions
+        a.attack(b);          // should notify observers
+        b.takeDamage(5);      // should notify observers on b
+        a.heal();             // should notify observers
+        a.specialMove(b);     // should NOT notify (per design)
+
+        std::cout << "Observer test finished. Check test_log.txt and console output." << std::endl;
     } catch (const std::exception& ex) {
         std::cerr << "Exception: " << ex.what() << std::endl;
         return 1;
