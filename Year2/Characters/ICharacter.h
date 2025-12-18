@@ -19,8 +19,8 @@ protected:
 
 public:
     // Constructors
-    ICharacter() = delete;
-    ICharacter(int attackPower, int currentHealth, int maxHealth, int mana, const std::string& name, int defense);
+    ICharacter() = default;
+    ICharacter(const int& attackPower,const int& currentHealth,const int& maxHealth,const int& mana, const std::string& name, const int& defense);
 
     // Observer management
     void addObserver(ICharacterObserver* observer);
