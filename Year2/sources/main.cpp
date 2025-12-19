@@ -17,6 +17,8 @@ int main() {
         return 1;
     }
 
+    std::cin.ignore();
+
     return 0;
 }
 

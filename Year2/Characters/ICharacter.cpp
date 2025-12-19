@@ -27,6 +27,11 @@ void ICharacter::heal() {
     notifyObservers(std::string(name + " healed for " + std::to_string(amount)), LogLevel::ACTION);
 }
 
+void ICharacter::healMana(int amount)  {
+    mana += amount;
+    notifyObservers(std::string(name + " restored " + std::to_string(amount) + " mana"), LogLevel::ACTION);
+}
+
 void ICharacter::attack(ICharacter& target) {
     notifyObservers(std::string(name + " attacked " + target.getName()), LogLevel::ACTION);
     target.takeDamage(this->attackPower);

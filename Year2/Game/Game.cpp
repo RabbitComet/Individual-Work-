@@ -75,6 +75,7 @@ void Game::startGame() {
 }
 
 bool Game::playTurn() {
+    int manaHeal =5;
     if (characters.empty()) {
         for(auto& logger : loggers){
             logger->log(LogLevel::WARNING, "No characters to play a turn");
@@ -85,6 +86,9 @@ bool Game::playTurn() {
    for(auto& player: characters){
         int action = 0;
         while (action < 1 || action > 3) {
+            for(auto& logger : loggers){
+                logger->log(LogLevel::INFO, std::string(player->getName() + " Health: ") + std::to_string(player->getCurrentHealth()) + "/" + std::to_string(player->getMaxHealth()) + ", Mana: " + std::to_string(player->getMana()));
+            }
             std::cout << player->getName() << "'s turn. Choose action (1=attack, 2=special, 3=heal): ";
             if (!(std::cin >> action)) {
                 std::cin.clear();
@@ -105,8 +109,11 @@ bool Game::playTurn() {
             // heal
             player->heal();
         }
+        player->healMana(manaHeal);
         if(isGameOver()) return true;
    }
+
+
    return false;
 }
 bool Game::isGameOver() {
@@ -122,6 +129,7 @@ bool Game::isGameOver() {
     if(defeated==2){
         for(auto& logger : loggers){
                 logger->log(LogLevel::INFO, std::string("It's a draw! Both players have been defeated."));
+                logger->log(LogLevel::INFO, "-----------------------------------------------");
             }
             return true;
     }
@@ -129,6 +137,7 @@ bool Game::isGameOver() {
 
                 for(auto& logger : loggers){
                     logger->log(LogLevel::INFO, "Game is over!");
+                    logger->log(LogLevel::INFO, "-----------------------------------------------");
                 }
         return true;
     }

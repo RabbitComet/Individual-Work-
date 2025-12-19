@@ -37,6 +37,7 @@ public:
     virtual void attack(ICharacter& target);
     virtual void specialMove(ICharacter& target) = 0;
     void takeDamage(int damage);
+    void healMana(int amount);
     void heal();
     
 
