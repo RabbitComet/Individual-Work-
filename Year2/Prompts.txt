@@ -1,0 +1,81 @@
+create a header , sources folder, and create an ICharacter header file that has the protected attributes int attack, int health, string name, int defense
+
+add an int mana attribute, and make the following methods without implementation, a parameterised constructor  that takes values for all the attributes , getter for name, health, mana, defense, void attack that has the parameter of ICharacter, a void defend method, and seperate the different types of methods with comments
+
+create the implementation file and add implementation to the constructor and getters
+
+Create and ILogger header, it should have a deconstructor and a virtual void log method that accpets a string 
+
+implement a console logger
+
+write a header IWriter that has a destructor and  virtual void method write that accepts  a string, implement a FIleWriter class that has the private attribute fstream file, it should only have a parameterised constructor that takes a string fileName, opens the file in app mode, and if it doesnt open throws a runtime error,  the write method should add the text to the file, the destructor should close the file if its open
+
+write implementation for a FileLogger that has private IWriter attribute, the constructor should take take a value for this IWriter, the log method should call the write method of the writer
+
+create an enum class LogLevel with the types ERROR, ACTION, INFO, WARNING,  the filelogger and consolelogger should add the types in front of their logs with the following format [LogLevel]>>message
+
+make a new folder for the header and source files dedicated to logging and put them all there, make sure to change the includes accordingly
+
+update the #includes for the files in the Logging folder 
+
+yes create a small example to test consoleLogger and FileLogger
+
+fix the include directories for the loggers and writer in main.cpp
+
+commit and push the code to github with the message "Added Logging Functionality"
+
+add a maxHealth attribute to ICharacter, turn health into currentHealth, a  void takeDamage method  that takes an int damage value, subtracts defense from it,  then subtracts it from the currentHealth value(if it is <0 set it to 0), get rid of the defend method, add a heal method that adds 10% of the max health to the current health(current health should not go higher than max health).
+
+add implementation to attack so it calls thetakeDamge method of the target using the value of attack
+
+create a specialMove method for ICharacter that takes target, make it pure virtual
+
+create a ICharacterObserver class, the character should notify after the action methods excluding specialMove
+
+now create a fileObserver and consoleObserver, that calls the log methods of filelogger and consolelogger respectively
+
+change the observers, and notify so they they can take an extra parameter logLevel from the method that is called, and for the current methods that are notifiying in ICharacter, the log level should be Action
+
+commit the files to the git repo with the message"added observer".
+
+make a warrior class, it should have 100 health, 20 attackpower, 50 mana, and 10 defense as default, and the special move should deal double damge while spending 30 mana, add notify to special move
+
+change the class from warrior to paladin, and instead of returning when theres insufficient mana, notify observers with a warning log saying not name + " Tried to Smite " + target.getName() + " but God did not answer..."
+
+push the changes with the message "Added Paladin class"
+
+create a heretic class that has the stats 85 hp, 5 defense, 15 attackpower,  15 mana, and for the special move it should cost 10 mana, it should half of its missing health as attackpower then deal damage to the target, and if it doesnt have enough mana, then it should take 5 hp from its own health and then do the special move.
+
+test the heretic and paladin classes along with the loggers
+
+commit and push the new changes with the text"Added Heretic class"
+
+create a CharacterFactory class that also has the obsdervers and sends an INFO log whenever a character is created, make it inside the Game folder
+
+instead of doing different methods for each, make it so theres 1 method that accepts a string and creates the character based off of that
+
+write character factory so that it has a method that accpets a number, and creates a character based off of the number (1 for paladin, 2 for heretic);
+
+change the main.cpp file towork with this new factory
+
+commit and push "added factory"
+
+create a Game class that has a vector of ILoggers, a vector of IObservers ,a vector of ICharacters , a factory, in the constructor it should call methods to add a consolelogger ad filelogger to the vector, a fileobserver and consoleobserver to observers vector, and should make a factory, dont change main.cpp
+
+add to the main.cpp to test the game class
+
+check the  game file and make the changes in main accordingly, there is no get factory method and i do not want there to be one
+
+make a create characters method in game, that asks for which type of character to create and a name, then creates said character and puts it in the vector
+
+make it so the createCharacter method makes the user repeat the input until it is valid
+
+now make a startGame method that calls createCharacter 2 times.
+
+Make a play turn method that loops through the players, ask for an input 1,2 or 3 then does that action(1 for attack, 2 for  specialmove, and 3 for heal) 
+
+make a checkPlayers method that loops through the players and check their current health. if one the player's hp is 0 then the other one wins, if both are 0 then it is a draw, output this by using all the loggers, and call this method in the playTurn method after a players action is done
+
+write teh main file from 0, in the main function make a Game object , call a loop repeatedly until the game ends
+
+commit with message" basically finished, need make better user feedback"
