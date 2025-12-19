@@ -1,0 +1,22 @@
+[INFO]>>Created Paladin
+[INFO]>>Created Heretic
+[ACTION]>>Sako used Smite on Mehmed
+[ACTION]>>Mehmed took 35 damage
+[ACTION]>>Mehmed used Sacrificial Strike on Sako
+[ACTION]>>Sako took 22 damage
+[ACTION]>>Sako attacked Mehmed
+[ACTION]>>Mehmed took 15 damage
+[ACTION]>>Mehmed attacked Sako
+[ACTION]>>Sako took 5 damage
+[ACTION]>>Sako attacked Mehmed
+[ACTION]>>Mehmed took 15 damage
+[ACTION]>>Mehmed attacked Sako
+[ACTION]>>Sako took 5 damage
+[ACTION]>>Sako attacked Mehmed
+[ACTION]>>Mehmed took 15 damage
+[ACTION]>>Mehmed attacked Sako
+[ACTION]>>Sako took 5 damage
+[ACTION]>>Sako attacked Mehmed
+[ACTION]>>Mehmed took 15 damage
+[INFO]>>Mehmed has been defeated!
+[INFO]>>Game is over!

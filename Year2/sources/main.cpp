@@ -1,61 +1,17 @@
 #include <iostream>
-#include "Logging/ConsoleLogger.h"
-#include "Logging/FileLogger.h"
-#include "Logging/FileWriter.h"
-#include "../Characters/ICharacter.h"
-#include "../Characters/ConsoleObserver.h"
-#include "../Characters/FileObserver.h"
-
-#include "../Characters/Paladin.h"
-#include "../Characters/Heretic.h"
-#include "../Game/CharacterFactory.h"
-#include <vector>
+#include "../Game/Game.h"
 
 int main() {
     try {
-        ConsoleLogger console;
-        console.log(LogLevel::INFO, "Console logger initialised");
+        Game game;
+        game.startGame();
 
-        FileWriter writer("test_log.txt");
-        FileLogger fileLogger(&writer);
+        // main loop: play turns until checkPlayers reports the game ended
+        bool state = false;
+       do{
+             state = game.playTurn();
+        }while(!state);
 
-        ConsoleObserver consoleObserver(&console);
-        FileObserver fileObserver(&fileLogger);
-
-        // Use factory to create characters and automatically attach observers
-        // Observers
-        ConsoleObserver cObs(&console);
-        FileObserver fObs(&fileLogger);
-
-        // Use factory to create characters and automatically attach observers
-        std::vector<ICharacterObserver*> observers = { &cObs, &fObs };
-        CharacterFactory factory(observers);
-        ICharacter* paladin = factory.createCharacter(1, "Uther");
-        ICharacter* heretic = factory.createCharacter(2, "Morgana");
-
-        console.log(LogLevel::INFO, "Starting Paladin vs Heretic test");
-
-        // Basic interactions
-        paladin->attack(*heretic);
-        heretic->attack(*paladin);
-
-        // Test special moves (Paladin costs 30 mana)
-        paladin->specialMove(*heretic); // should succeed
-        paladin->specialMove(*heretic); // likely insufficient mana -> WARNING
-
-        // Test Heretic special (costs 10 mana or sacrifice if insufficient)
-        heretic->specialMove(*paladin); // should succeed
-        heretic->specialMove(*paladin); // may sacrifice HP if mana low
-
-        // Heal actions
-        paladin->heal();
-        heretic->heal();
-
-        // cleanup
-        delete paladin;
-        delete heretic;
-
-        std::cout << "Paladin/Heretic test finished. Check test_log.txt and console output." << std::endl;
     } catch (const std::exception& ex) {
         std::cerr << "Exception: " << ex.what() << std::endl;
         return 1;
@@ -63,3 +19,4 @@ int main() {
 
     return 0;
 }
+
